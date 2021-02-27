@@ -1,0 +1,17 @@
+COVID_Fake_News_Data.csv:
+Sumit Banik. (2020). COVID Fake News Dataset [Data set]. Zenodo. http://doi.org/10.5281/zenodo.4282522
+
+scraped_data and scraped_tweets:
+@misc{cui2020coaid,
+    title={CoAID: COVID-19 Healthcare Misinformation Dataset},
+    author={Limeng Cui and Dongwon Lee},
+    year={2020},
+    eprint={2006.00885},
+    archivePrefix={arXiv},
+    primaryClass={cs.SI}
+}
+Transformers paper: https://arxiv.org/abs/1706.03762
+Transformers made with the help of http://peterbloem.nl/blog/transformers
+
+Models made and deployed with the Pytorch framework (pytorch.org)
+
