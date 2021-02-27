@@ -427,12 +427,12 @@ class batch_transformer(c_transformer):
         pieces = []
         for x in words:
             removed = [i for i in x.split(' ') if i not in self.stopwords]
-            w = torch.stack([self.w_embed(word2tensor(i).unsqueeze(0))
+            w = torch.stack([self.w_embed(word2tensor(i).to(device).unsqueeze(0))
                              for i in removed]).transpose(0, 1).to(device)
             pieces.append(w.squeeze(0))  # shape seq,embed
         padded = nn.utils.rnn.pad_sequence(pieces, batch_first=True)
         b, t, k = padded.size()
-        pos_embeddings = self.pos_embed(torch.arange(t)).expand(b, t, k)
+        pos_embeddings = self.pos_embed(torch.arange(t).to(device)).expand(b, t, k)
         attended = self.transformers(pos_embeddings + w)
         classes = self.fc(attended).mean(dim=1)
         return self.sig(classes.reshape(b, -1))
