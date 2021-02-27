@@ -1,0 +1,2 @@
+To train models, simply run 
+python training.py
