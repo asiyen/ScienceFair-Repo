@@ -294,13 +294,13 @@ def already_train_better(model, trains, vals, epochs,
                 mask=torch.zeros_like(target)
                 mask[target==0]=weights[0]
                 mask[target==1]=weights[1]
-                loss = (lossf(pred, target.reshape(-1))*weights[int(target)]).mean()
+                loss = (lossf(pred, target.reshape(-1,1))*mask).mean()
                 
                 model.zero_grad()
                 o.zero_grad()
                 loss.backward()
                 o.step()
-                avgloss += loss.data
+                avgloss += float(loss.data)
             model.eval()
             with torch.no_grad():
                 count = 0
@@ -426,13 +426,13 @@ class batch_transformer(c_transformer):
     def forward(self, words):
         pieces = []
         for x in words:
-            removed = [i for i in x.split(' ') if i not in self.stopwords]
+            removed = [i for i in x.split(' ') if i not in stopwords]
             w = torch.stack([self.w_embed(word2tensor(i).to(device).unsqueeze(0))
                              for i in removed]).transpose(0, 1).to(device)
             pieces.append(w.squeeze(0))  # shape seq,embed
         padded = nn.utils.rnn.pad_sequence(pieces, batch_first=True)
-        b, t, k = padded.size()
+        b, t, k = padded.shape
         pos_embeddings = self.pos_embed(torch.arange(t).to(device)).expand(b, t, k)
-        attended = self.transformers(pos_embeddings + w)
+        attended = self.transformers(pos_embeddings + padded)
         classes = self.fc(attended).mean(dim=1)
-        return self.sig(classes.reshape(b, -1))
+        return torch.sigmoid(classes.reshape(b, -1))
