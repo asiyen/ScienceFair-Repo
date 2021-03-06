@@ -10,6 +10,9 @@ scraped_data and scraped_tweets:
     archivePrefix={arXiv},
     primaryClass={cs.SI}
 }
+corona_fake.csv:
+https://raw.githubusercontent.com/susanli2016/NLP-with-Python/master/data/corona_fake.csv
+
 Transformers paper: https://arxiv.org/abs/1706.03762
 Transformers made with the help of http://peterbloem.nl/blog/transformers
 
